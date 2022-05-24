@@ -5,7 +5,7 @@ in order to quickly identify them. Therefore, I thought a small JavaScript
 library that would inject favicons (from [DuckDuckGo](https://duckduckgo.com/)
 at the moment) could be useful for others.
 
-And thus we have `JavaScript-RemoteURLOpener`.
+And thus we have `JavaScript-FaviconStamper`.
 
 Simple goals:
 
@@ -22,12 +22,18 @@ Usage:
 FaviconStamper.init();
 ```
 
-### Before
+### Code: Before
 ``` html
 <a href="https://olivernassar.com/" class="favicon">Oliver Nassar</a>
 ```
 
-### After
+### Code: After
 ``` html
 <a href="https://olivernassar.com/" class="favicon" style="background-image: url("https://icons.duckduckgo.com/ip3/olivernassar.com.ico"); background-repeat: no-repeat; padding-left: 20px; background-size: auto 75%; background-position: left center;">Oliver Nassar</a>
 ```
+
+### UI: Before
+![](https://i.imgur.com/VK3RUIq.png)
+
+### UI: After
+![](https://i.imgur.com/O9O2jYu.png)
