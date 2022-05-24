@@ -37,7 +37,7 @@ FaviconStamper.init();
 
 | First Header  | Second Header |
 | ------------- | ------------- |
-| ![](https://i.imgur.com/VK3RUIq.png)  | Content Cell  |
+| ![](https://i.imgur.com/VK3RUIq.png)  | ![](https://i.imgur.com/O9O2jYu.png)  |
 | Content Cell  | Content Cell  |
 
 
