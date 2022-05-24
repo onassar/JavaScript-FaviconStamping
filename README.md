@@ -32,8 +32,7 @@ FaviconStamper.init();
 <a href="https://olivernassar.com/" class="favicon" style="background-image: url("https://icons.duckduckgo.com/ip3/olivernassar.com.ico"); background-repeat: no-repeat; padding-left: 20px; background-size: auto 75%; background-position: left center;">Oliver Nassar</a>
 ```
 
-### UI: Before
-![](https://i.imgur.com/VK3RUIq.png)
-
-### UI: After
-![](https://i.imgur.com/O9O2jYu.png)
+### UI
+| Before    | After     |
+|-----------------------|
+| ![](https://i.imgur.com/VK3RUIq.png) | ![](https://i.imgur.com/O9O2jYu.png) |
