@@ -2,8 +2,10 @@
 /**
  * FaviconStamping
  * 
- * @todo    Add dom change detection to deal with links that are generated on
- *          the fly (eg. HTML injected into the page).
+ * @see     https://codepen.io/djekl/pen/QWKNNjv
+ * @see     https://stackoverflow.com/questions/6300749/is-there-a-way-to-use-max-width-and-height-for-a-background-image
+ * @see     https://github.com/microlinkhq/unavatar
+ * @see     https://unavatar.io/
  * @access  public
  * @var     Object
  */
@@ -23,53 +25,13 @@ var FaviconStamping = (function() {
     var __config = {
 
         /**
-         * classNames
-         * 
-         * An array of class names that will result in those respective elements
-         * being excluded from any event binding.
-         * 
-         * In english: elements with one of these class names will not have a
-         * click event trigger a new tab or window.
+         * selectors
          * 
          * @access  private
          * @var     Object
          */
-        classNames: [
-            'remote-urls-ignore'
-        ],
-
-        /**
-         * includeMailtoElements
-         * 
-         * Whether elements pointing to a mailto: flow ought to open in a new
-         * tab or window.
-         * 
-         * @access  private
-         * @var     Boolean (default: true)
-         */
-        includeMailtoElements: true,
-
-        /**
-         * outboundClickParams
-         * 
-         * @access  private
-         * @var     Object (default: {})
-         */
-        outboundClickParams: {},
-
-        /**
-         * validHostnames
-         * 
-         * An array of hostnames that are excluded from any event binding.
-         * 
-         * In english: any element on the page that has a hostname in this array
-         * will not have a click event trigger a new tab or window.
-         * 
-         * @access  private
-         * @var     Object
-         */
-        validHostnames: [
-            window.location.host
+        selectors: [
+            '.favicon'
         ]
     };
 
@@ -87,59 +49,63 @@ var FaviconStamping = (function() {
      */
 
     /**
-     * __addClickEventListener
+     * __getDuckDuckGoFaviconURL
      * 
-     * @access  private
-     * @param   HTMLElement $element
-     * @return  void
-     */
-    var __addClickEventListener = function($element) {
-        var handler = __handleClickEvent;
-        $element.addEventListener('click', handler);
-    };
-
-    /**
-     * __elementAlreadyOpeningExternally
-     * 
-     * @access  private
-     * @param   HTMLElement $element
-     * @return  Boolean
-     */
-    var __elementAlreadyOpeningExternally = function($element) {
-        var target = $element.getAttribute('target');
-        if (target === null) {
-            return false;
-        }
-        if (target === undefined) {
-            return false;
-        }
-        target = target.trim().toLowerCase();
-        if (target === '_blank') {
-            return true;
-        }
-        return false;
-    };
-
-    /**
-     * __getOutboundURL
-     * 
-     * @see     https://developer.mozilla.org/en-US/docs/Web/API/URL
      * @access  private
      * @param   HTMLElement $element
      * @return  String
      */
-    var __getOutboundURL = function($element) {
-        var href = $element.getAttribute('href');
-        if (__isMailtoElement($element) === true) {
-            return href;
+    var __getDuckDuckGoFaviconURL = function($element) {
+        var hostname = __getHostname($element),
+            faviconURL = 'https://icons.duckduckgo.com/ip3/' + (hostname) + '.ico';
+        return faviconURL;
+    };
+
+    // /**
+    //  * __getGoogleFaviconURL
+    //  * 
+    //  * @access  private
+    //  * @param   HTMLElement $element
+    //  * @return  String
+    //  */
+    // var __getGoogleFaviconURL = function($element) {
+    //     var href = $element.getAttribute('href'),
+    //         url = new URL(href),
+    //         hostname = url.hostname,
+    //         faviconURL = 'https://unavatar.io/' + (hostname) + '.ico';
+    //     return faviconURL;
+    // };
+
+    // /**
+    //  * __getUnavatarFaviconURL
+    //  * 
+    //  * @access  private
+    //  * @param   HTMLElement $element
+    //  * @return  String
+    //  */
+    // var __getUnavatarFaviconURL = function($element) {
+    //     var href = $element.getAttribute('href'),
+    //         url = new URL(href),
+    //         hostname = url.hostname,
+    //         faviconURL = 'https://unavatar.io/' + (hostname) + '.ico';
+    //     return faviconURL;
+    // };
+
+    /**
+     * __getHostname
+     * 
+     * @access  private
+     * @param   HTMLElement $element
+     * @return  String
+     */
+    var __getHostname = function($element) {
+        var href = $element.getAttribute('href'),
+            url = new URL(href),
+            hostname = url.hostname;
+        if (hostname === 'dash.cloudflare.com') {
+            hostname = 'cloudflare.com';
         }
-        var url = new URL(href);
-        for (var key in __config.outboundClickParams) {
-            var value = __config.outboundClickParams[key];
-            url.searchParams.append(key, value);
-        }
-        url = url.toString();
-        return url;
+        return hostname;
     };
 
     /**
@@ -149,83 +115,27 @@ var FaviconStamping = (function() {
      * @return  String
      */
     var __getSelector = function() {
-        var selector = 'a',
-            classNames = __config.classNames;
-        for (var className of classNames) {
-            selector = (selector) + ':(.' + (className) + ')';
-        }
+        var selectors = __config.selectors,
+            selector = selectors.join(',');
         return selector;
     };
 
     /**
-     * __handleClickEvent
-     * 
-     * @access  private
-     * @param   Object event
-     * @return  void
-     */
-    var __handleClickEvent = function(event) {
-        event.preventDefault();
-        var $element = this,
-            url = __getOutboundURL($element);
-        window.open(url);
-    };
-
-    /**
-     * __isMailtoElement
+     * __includeFavicon
      * 
      * @access  private
      * @param   HTMLElement $element
      * @return  void
      */
-    var __isMailtoElement = function($element) {
-        var href = $element.getAttribute('href');
-        if (href === null) {
-            return false;
-        }
-        if (href === undefined) {
-            return false;
-        }
-        var pattern = /^mailto\:/i;
-        if (href.match(pattern) === null) {
-            return false;
-        }
-        return true;
-    };
+    var __includeFavicon = function($element) {
+        var faviconURL = __getDuckDuckGoFaviconURL($element);
+        $element.style.backgroundImage = 'url("' + (faviconURL) + '")';
+        $element.style.backgroundRepeat = 'no-repeat';
+        $element.style.paddingLeft = '20px';
+        // $element.style.backgroundSize = 'contain';
+        $element.style.backgroundSize = 'auto 75%';
+        $element.style.backgroundPosition = 'left center';
 
-    /**
-     * __remotableElement
-     * 
-     * @access  private
-     * @param   HTMLElement $element
-     * @return  Boolean
-     */
-    var __remotableElement = function($element) {
-        if (__config.includeMailtoElements && __isMailtoElement($element) === true) {
-            return true;
-        }
-        var hostname = $element.hostname;
-        if (hostname === '') {
-            return false;
-        }
-        if (__config.validHostnames.includes(hostname) === true) {
-            return false;
-        }
-        if (__elementAlreadyOpeningExternally($element) === true) {
-            return false;
-        }
-        return true;
-    };
-
-    /**
-     * __remoteOpen
-     * 
-     * @access  private
-     * @param   String url
-     * @return  void
-     */
-    var __remoteOpen = function(url) {
-        window.open(url);
     };
 
     /**
@@ -237,13 +147,9 @@ var FaviconStamping = (function() {
     var __scan = function() {
         var selector = __getSelector(),
             $elements = document.querySelectorAll(selector);
-console.log($element);
-        // for (var $element of $elements) {
-        //     if (__remotableElement($element) === false) {
-        //         continue;
-        //     }
-        //     __addClickEventListener($element);
-        // }
+        for (var $element of $elements) {
+            __includeFavicon($element);
+        }
     };
 
     /**
@@ -278,22 +184,6 @@ console.log($element);
             }
             __config[key] = value;
             return true;
-        },
-
-        /**
-         * setRef
-         * 
-         * @access  public
-         * @param   String ref
-         * @return  Boolean
-         */
-        setRef: function(ref) {
-            var key = 'outboundClickParams',
-                params = {};
-            params.ref = ref;
-            var value = params,
-                response = FaviconStamping.setConfig(key, value);
-            return response;
         }
     };
 })();
