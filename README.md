@@ -29,5 +29,5 @@ FaviconStamper.init();
 
 ### After
 ``` html
-<a href="https://olivernassar.com/" class="favicon" style="background-image: url(&quot;https://icons.duckduckgo.com/ip3/olivernassar.com.ico&quot;); background-repeat: no-repeat; padding-left: 20px; background-size: auto 75%; background-position: left center;">Oliver Nassar</a>
+<a href="https://olivernassar.com/" class="favicon" style="background-image: url("https://icons.duckduckgo.com/ip3/olivernassar.com.ico"); background-repeat: no-repeat; padding-left: 20px; background-size: auto 75%; background-position: left center;">Oliver Nassar</a>
 ```
