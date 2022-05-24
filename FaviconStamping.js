@@ -6,6 +6,8 @@
  * @see     https://stackoverflow.com/questions/6300749/is-there-a-way-to-use-max-width-and-height-for-a-background-image
  * @see     https://github.com/microlinkhq/unavatar
  * @see     https://unavatar.io/
+ * @todo    Add ability to choose between favicon vendors
+ * @todo    Add DOM change event listeners to handle dynamically added elements
  * @access  public
  * @var     Object
  */
