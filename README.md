@@ -34,6 +34,13 @@ FaviconStamper.init();
 
 ### UI
 
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+
 | Before    | After     |
 |-----------------------|
 | ![](https://i.imgur.com/VK3RUIq.png) | ![](https://i.imgur.com/O9O2jYu.png) |
