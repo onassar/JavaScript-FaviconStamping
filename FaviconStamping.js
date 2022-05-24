@@ -25,14 +25,34 @@ var FaviconStamping = (function() {
     var __config = {
 
         /**
-         * selectors
+         * hostnameMapping
          * 
          * @access  private
          * @var     Object
          */
+        hostnameMapping: {
+            'dash.cloudflare.com': 'cloudflare.com'
+        },
+
+        /**
+         * selectors
+         * 
+         * @access  private
+         * @var     Array
+         */
         selectors: [
             '.favicon'
-        ]
+        ],
+
+        /**
+         * styles
+         * 
+         * @access  private
+         * @var     Object
+         */
+        styles: {
+            paddingLeft: '20px'
+        }
     };
 
     /**
@@ -76,6 +96,33 @@ var FaviconStamping = (function() {
     //     return faviconURL;
     // };
 
+    /**
+     * __getHostname
+     * 
+     * @access  private
+     * @param   HTMLElement $element
+     * @return  String
+     */
+    var __getHostname = function($element) {
+        var href = $element.getAttribute('href'),
+            url = new URL(href),
+            hostname = url.hostname;
+        hostname = __config.hostnameMapping[hostname] || hostname;
+        return hostname;
+    };
+
+    /**
+     * __getSelector
+     * 
+     * @access  private
+     * @return  String
+     */
+    var __getSelector = function() {
+        var selectors = __config.selectors,
+            selector = selectors.join(',');
+        return selector;
+    };
+
     // /**
     //  * __getUnavatarFaviconURL
     //  * 
@@ -92,35 +139,6 @@ var FaviconStamping = (function() {
     // };
 
     /**
-     * __getHostname
-     * 
-     * @access  private
-     * @param   HTMLElement $element
-     * @return  String
-     */
-    var __getHostname = function($element) {
-        var href = $element.getAttribute('href'),
-            url = new URL(href),
-            hostname = url.hostname;
-        if (hostname === 'dash.cloudflare.com') {
-            hostname = 'cloudflare.com';
-        }
-        return hostname;
-    };
-
-    /**
-     * __getSelector
-     * 
-     * @access  private
-     * @return  String
-     */
-    var __getSelector = function() {
-        var selectors = __config.selectors,
-            selector = selectors.join(',');
-        return selector;
-    };
-
-    /**
      * __includeFavicon
      * 
      * @access  private
@@ -131,7 +149,7 @@ var FaviconStamping = (function() {
         var faviconURL = __getDuckDuckGoFaviconURL($element);
         $element.style.backgroundImage = 'url("' + (faviconURL) + '")';
         $element.style.backgroundRepeat = 'no-repeat';
-        $element.style.paddingLeft = '20px';
+        $element.style.paddingLeft = __config.styles.paddingLeft;
         // $element.style.backgroundSize = 'contain';
         $element.style.backgroundSize = 'auto 75%';
         $element.style.backgroundPosition = 'left center';
