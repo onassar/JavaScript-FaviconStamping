@@ -72,6 +72,21 @@ var FaviconStamping = (function() {
      * 
      */
 
+    // /**
+    //  * __get1PasswordFaviconURL
+    //  * 
+    //  * @access  private
+    //  * @param   HTMLElement $element
+    //  * @return  String
+    //  */
+    // var __get1PasswordFaviconURL = function($element) {
+    //     var href = $element.getAttribute('href'),
+    //         url = new URL(href),
+    //         hostname = url.hostname,
+    //         faviconURL = 'https://c.1password.com/richicons/images/login/120/' + (hostname) + '.png';
+    //     return faviconURL;
+    // };
+
     /**
      * __getDuckDuckGoFaviconURL
      * 
